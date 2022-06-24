@@ -10,8 +10,17 @@ const Maps = () => {
     setCountries(mapData.features);
   }, []);
 
+  const countryColor = ['white', 'red', 'blue', 'green'];
+
   const countryStyle = {
-    fillColor: 'red',
+    fillColor: countryColor[0],
+    color: 'gray',
+    weight: 1,
+  };
+
+  const onEachCountry = (country, layer) => {
+    const countryName = country.properties.ADMIN;
+    layer.bindPopup(countryName);
   };
 
   return (
@@ -20,8 +29,19 @@ const Maps = () => {
         <div></div>
       ) : (
         <div style={{ margin: 0, height: '100vh' }}>
-          <MapContainer style={{ height: '100vh' }} zoom={5} center={[40, 125]}>
-            <GeoJSON style={countryStyle} data={countries} />
+          <MapContainer
+            style={{ height: '100vh' }}
+            zoom={5}
+            center={[40, 125]}
+            noWrap={true}
+            options={{ worldCopyJump: true }}
+          >
+            <GeoJSON
+              style={countryStyle}
+              data={countries}
+              onEachFeature={onEachCountry}
+              noWrap={true}
+            />
           </MapContainer>
         </div>
       )}
